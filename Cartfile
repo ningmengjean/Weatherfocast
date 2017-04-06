@@ -1,0 +1,2 @@
+github "SwiftyJSON/SwiftyJSON"
+github "onevcat/Kingfisher" ~> 3.0a
