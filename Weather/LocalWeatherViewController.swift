@@ -32,11 +32,14 @@ class LocalWeatherViewController: UIViewController {
     func parseJSON(_ data: Data) -> JSON {
         return JSON(data: data)
     }
-}
-
-extension LocalWeatherViewController: UISearchBarDelegate {
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        let url = urlWithCityName(searchBar.text!)
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        fetchWeatherDateWithCityName("Beijing")
+    }
+    
+    func fetchWeatherDateWithCityName(_ city: String) {
+        let url = urlWithCityName(city)
         let session = URLSession.shared
         let dataTask = session.dataTask(with: url, completionHandler: {
             data, response, error in
@@ -53,3 +56,4 @@ extension LocalWeatherViewController: UISearchBarDelegate {
         dataTask.resume()
     }
 }
+
