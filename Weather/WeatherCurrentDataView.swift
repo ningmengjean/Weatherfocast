@@ -19,7 +19,7 @@ class WeatherCurrentDataView: UIView {
     @IBOutlet weak var cityNameLable: UILabel!
     @IBOutlet weak var weatherImageView: UIImageView!
     @IBOutlet weak var winddegLable: UILabel!
-    
+    @IBOutlet weak var conditionView: UIView!
     func unixTimeConvertion(_ unixTime: Double) -> String {
         let time = Date(timeIntervalSince1970: unixTime)
         let dateFormatter = DateFormatter()
