@@ -11,7 +11,7 @@ import Foundation
 import CoreLocation
 
 protocol LocationServiceDelegate: class {
-    func locationDidUpdate(_service: LocationService, location: CLLocation)
+    func fetchWeatherDateWithLonAndLat(_service: LocationService, location: CLLocation)
 }
 
 class LocationService: NSObject {
@@ -30,10 +30,10 @@ class LocationService: NSObject {
 }
 
 extension LocationService: CLLocationManagerDelegate {
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    func locationManager(_ manager: CLLocationManager, fetchWeatherDateWithLonAndLat locations: [CLLocation]) {
         let sortedLocations = locations.filter{ $0.horizontalAccuracy > 0 }.sorted { $0.horizontalAccuracy < $1.horizontalAccuracy }
         if let location = sortedLocations.first {
-            delegate?.locationDidUpdate(_service: self, location: location)
+            delegate?.fetchWeatherDateWithLonAndLat(_service: self, location: location)
            
         }
     }
