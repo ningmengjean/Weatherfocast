@@ -12,6 +12,10 @@ import SwiftyJSON
 
 import Kingfisher
 
+import LatLongToTimezone
+
+import CoreLocation
+
 fileprivate extension String {
     fileprivate func urlEncode() -> String {
         guard let encode = self.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else { return "" }
@@ -19,8 +23,13 @@ fileprivate extension String {
     }
 }
 
-class LocalWeatherViewController: UIViewController {
 
+class LocalWeatherViewController: UIViewController {
+    
+    let locationService = LocationService()
+    locationService.delegate = self
+    
+    
     func urlWithCityName(_ cityName: String) -> URL {
         let urlString = String(format: "http://api.openweathermap.org/data/2.5/weather?q=%@&units=metric&appid=42fa1d43af611380ae540646f4a2c783", cityName.urlEncode())
         let url = URL(string: urlString)
@@ -39,7 +48,7 @@ class LocalWeatherViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        fetchWeatherDateWithCityName("Beijing")
+        fetchWeatherDateWithCityName("Tianjin")
     }
     
     func fetchWeatherDateWithCityName(_ city: String) {
@@ -59,5 +68,19 @@ class LocalWeatherViewController: UIViewController {
         })
         dataTask.resume()
     }
+    
 }
+
+extension LocalWeatherViewController: LocationServiceDelegate {
+    
+}
+
+
+
+
+
+
+
+
+
 

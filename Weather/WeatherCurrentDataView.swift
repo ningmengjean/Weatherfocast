@@ -8,6 +8,10 @@
 
 import UIKit
 
+import LatLongToTimezone
+
+import CoreLocation
+
 class WeatherCurrentDataView: UIView {
 
     @IBOutlet weak var tempLabel: UILabel!
@@ -18,13 +22,19 @@ class WeatherCurrentDataView: UIView {
     @IBOutlet weak var windLable: UILabel!
     @IBOutlet weak var cityNameLable: UILabel!
     @IBOutlet weak var weatherImageView: UIImageView!
-    @IBOutlet weak var winddegLable: UILabel!
     @IBOutlet weak var conditionView: UIView!
+    
+    var location: CLLocationCoordinate2D?
+
     func unixTimeConvertion(_ unixTime: Double) -> String {
         let time = Date(timeIntervalSince1970: unixTime)
         let dateFormatter = DateFormatter()
-        dateFormatter.timeZone = TimeZone(identifier: cityNameLable.text!)
+        if let location = location,  let timeZone = TimezoneMapper.latLngToTimezone(location) {
+            dateFormatter.timeZone = timeZone
+            print(timeZone.identifier)
+        }
         dateFormatter.locale = Locale(identifier: Locale.current.identifier)
+        
         dateFormatter.dateFormat = "hh:mm a"
         return dateFormatter.string(from: time)
     }
@@ -44,7 +54,7 @@ class WeatherCurrentDataView: UIView {
         
         return cardinals[index]
         
-    }    
+    }
 
     var result: SearchResult? {
         didSet {
@@ -62,23 +72,46 @@ class WeatherCurrentDataView: UIView {
                 weatherDescriptionLable.text = weatherDescription
             }
             if let humidity = result.humidity {
-                humidityLable.text = String(humidity) + "%"
+                humidityLable.text = "humidity:  " + String(humidity) + "%"
             }
             if let wind = result.wind {
-                windLable.text = String(wind) + "m/s"
+                if let winddeg = result.winddeg {
+                    windLable.text = "wind:  " + String(wind) + "m/s   " + convertDegreesNorthToCardinalDirection(degrees: winddeg)
+                }
             }
-            if let winddeg = result.winddeg {
-                winddegLable.text = convertDegreesNorthToCardinalDirection(degrees: winddeg)
+            if let lon = result.lon, let lat = result.lat {
+                location = CLLocationCoordinate2D(latitude: CLLocationDegrees(lat), longitude: CLLocationDegrees(lon))
             }
+            
             if let sunrise = result.sunrise {
-                sunriseLable.text = "sunrise: " + self.unixTimeConvertion(sunrise)
+                sunriseLable.text = "sunrise:  " + self.unixTimeConvertion(sunrise)
             }
             if let sunset = result.sunset {
-                sunsetLable.text = "sunset: " + self.unixTimeConvertion(sunset)
+                sunsetLable.text = "sunset:  " + self.unixTimeConvertion(sunset)
             }
             if let icon = result.icon, let url = URL(string: "http://openweathermap.org/img/w/\(icon).png") {
                 weatherImageView.kf.setImage(with: url)
             }
+            
         }
     }
+    
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

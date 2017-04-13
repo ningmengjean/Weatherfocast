@@ -1,2 +1,3 @@
 github "SwiftyJSON/SwiftyJSON"
-github "onevcat/Kingfisher" ~> 3.0a
+github "onevcat/Kingfisher" ~> 3.0
+github "drtimcooper/LatLongToTimezone" ~> 1.1

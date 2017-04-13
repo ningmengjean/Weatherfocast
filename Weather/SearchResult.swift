@@ -19,14 +19,13 @@ class SearchResult: AnyObject {
         temp = json["main", "temp"].int
         temp_max = json["main", "temp_max"].int
         temp_min = json["main", "temp_min"].int
-        lat = json["coord", "lat"].double
-        lon = json["coord", "lon"].double
+        lat = json["coord", "lat"].float
+        lon = json["coord", "lon"].float    
         humidity = json["main", "humidity"].int
         wind = json["wind", "speed"].double
         sunrise = json["sys", "sunrise"].double
         sunset = json [ "sys", "sunset"].double
         winddeg = json["wind", "deg"].int
-        
     }
     
     var cityName: String?
@@ -35,8 +34,8 @@ class SearchResult: AnyObject {
     var temp: Int?
     var temp_max: Int?
     var temp_min: Int?
-    var lat: Double?
-    var lon: Double?
+    var lat: Float?
+    var lon: Float?
     var humidity: Int?
     var wind: Double?
     var sunrise: Double?
