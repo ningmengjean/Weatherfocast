@@ -26,12 +26,12 @@ fileprivate extension String {
 
 class LocalWeatherViewController: UIViewController {
     
-    let locationService = LocationService()
-    locationService.delegate = self
+    var locationService = LocationService()
     
     
-    func urlWithCityName(_ cityName: String) -> URL {
-        let urlString = String(format: "http://api.openweathermap.org/data/2.5/weather?q=%@&units=metric&appid=42fa1d43af611380ae540646f4a2c783", cityName.urlEncode())
+    func urlWithLonAndLat(_ lon: Double, lat: Double) -> URL {
+        let urlString = String(format: "http://api.openweathermap.org/data/2.5/weather?lat=%@&lon=%@&units=metric&appid=42fa1d43af611380ae540646f4a2c783")
+        
         let url = URL(string: urlString)
         return url!
     }
@@ -48,11 +48,13 @@ class LocalWeatherViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        fetchWeatherDateWithCityName("Tianjin")
+        fetchWeatherDateWithLonAndLat(location)
     }
     
-    func fetchWeatherDateWithCityName(_ city: String) {
-        let url = urlWithCityName(city)
+    func fetchWeatherDateWithLonAndLat(_ location: CLLocation) {
+        let lon = location.coordinate.longitude
+        let lat = location.coordinate.latitude
+        let url = urlWithLonAndLat(lon, lat: lat)
         let session = URLSession.shared
         let dataTask = session.dataTask(with: url, completionHandler: {
             data, response, error in
@@ -71,9 +73,7 @@ class LocalWeatherViewController: UIViewController {
     
 }
 
-extension LocalWeatherViewController: LocationServiceDelegate {
-    
-}
+
 
 
 

@@ -34,6 +34,7 @@ extension LocationService: CLLocationManagerDelegate {
         let sortedLocations = locations.filter{ $0.horizontalAccuracy > 0 }.sorted { $0.horizontalAccuracy < $1.horizontalAccuracy }
         if let location = sortedLocations.first {
             delegate?.locationDidUpdate(_service: self, location: location)
+           
         }
     }
     
