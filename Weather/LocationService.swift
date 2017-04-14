@@ -30,7 +30,7 @@ class LocationService: NSObject {
 }
 
 extension LocationService: CLLocationManagerDelegate {
-    func locationManager(_ manager: CLLocationManager, fetchWeatherDateWithLonAndLat locations: [CLLocation]) {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let sortedLocations = locations.filter{ $0.horizontalAccuracy > 0 }.sorted { $0.horizontalAccuracy < $1.horizontalAccuracy }
         if let location = sortedLocations.first {
             delegate?.fetchWeatherDateWithLonAndLat(_service: self, location: location)
