@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="62T-27-Rfv" customClass="ForecastDataCell" customModule="Weather" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="90" height="150"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="90" height="150"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6z1-mn-4Gv">
+                        <rect key="frame" x="20" y="10" width="50" height="20"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iPe-qG-Daj">
+                        <rect key="frame" x="20" y="120" width="50" height="20"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="HB8-pv-Add">
+                        <rect key="frame" x="20" y="50" width="50" height="50"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="50" id="mvE-sb-8uB"/>
+                            <constraint firstAttribute="width" constant="50" id="xWz-kv-ko9"/>
+                        </constraints>
+                    </imageView>
+                </subviews>
+            </view>
+            <constraints>
+                <constraint firstItem="iPe-qG-Daj" firstAttribute="centerX" secondItem="HB8-pv-Add" secondAttribute="centerX" id="HGr-xS-I7x"/>
+                <constraint firstItem="HB8-pv-Add" firstAttribute="centerX" secondItem="6z1-mn-4Gv" secondAttribute="centerX" id="JNx-Nm-7qK"/>
+                <constraint firstAttribute="trailing" secondItem="HB8-pv-Add" secondAttribute="trailing" constant="20" id="Mae-63-PTG"/>
+                <constraint firstItem="6z1-mn-4Gv" firstAttribute="top" secondItem="62T-27-Rfv" secondAttribute="top" constant="10" id="Pic-0Y-DKa"/>
+                <constraint firstItem="iPe-qG-Daj" firstAttribute="width" secondItem="6z1-mn-4Gv" secondAttribute="width" id="R7X-ba-rCr"/>
+                <constraint firstItem="HB8-pv-Add" firstAttribute="leading" secondItem="62T-27-Rfv" secondAttribute="leading" constant="20" id="ROH-eW-dld"/>
+                <constraint firstItem="iPe-qG-Daj" firstAttribute="top" secondItem="HB8-pv-Add" secondAttribute="bottom" constant="20" id="auk-aU-fZR"/>
+                <constraint firstItem="6z1-mn-4Gv" firstAttribute="leading" secondItem="62T-27-Rfv" secondAttribute="leading" constant="20" id="lau-ln-17x"/>
+                <constraint firstItem="HB8-pv-Add" firstAttribute="top" secondItem="6z1-mn-4Gv" secondAttribute="bottom" constant="20" id="msB-9H-9Kw"/>
+            </constraints>
+            <size key="customSize" width="92" height="190"/>
+            <connections>
+                <outlet property="ForecastImageView" destination="HB8-pv-Add" id="EwD-MW-YFC"/>
+                <outlet property="forecastImageView" destination="HB8-pv-Add" id="5QV-12-Kg7"/>
+                <outlet property="forecastTemp" destination="iPe-qG-Daj" id="soo-FX-YFx"/>
+                <outlet property="forecastTime" destination="6z1-mn-4Gv" id="p9R-vp-zCi"/>
+            </connections>
+            <point key="canvasLocation" x="54" y="30"/>
+        </collectionViewCell>
+    </objects>
+</document>
