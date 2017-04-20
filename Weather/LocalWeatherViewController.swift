@@ -52,6 +52,12 @@ class LocalWeatherViewController: UIViewController, LocationServiceDelegate {
         }
     }
     
+    var forecastResult = [Forecast]() {
+        didSet {
+            forecastData.reloadData()
+        }
+    }
+    
     func parseJSON(_ data: Data) -> JSON {
         return JSON(data: data)
     }
@@ -65,7 +71,7 @@ class LocalWeatherViewController: UIViewController, LocationServiceDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         locationService.delegate = self
-        forecastData.register(UINib(nibName: "ForecastCell", bundle: Bundle.main), forCellWithReuseIdentifier: "ForecastCell")
+        forecastData.register(UINib(nibName: "ForecastDataCell", bundle: Bundle.main), forCellWithReuseIdentifier: "ForecastDataCell")
     }
 
     func getLocation(_service: LocationService, location: CLLocation) {
@@ -103,11 +109,8 @@ class LocalWeatherViewController: UIViewController, LocationServiceDelegate {
             if let error = error {
                 print("Failure! \(error)")
             } else if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
-                let forecastResults = self.parseJSON(data!)["list"].arrayValue.map { Forecast(json: $0) }
                 DispatchQueue.main.async {
-                    for i in 0...39 {
-                    self.forecastData.cell = forecastResults[i]
-                    }
+                    self.forecastResult = self.parseJSON(data!)["list"].arrayValue.map { Forecast(json: $0) }
                 }
             }
         })
@@ -117,15 +120,25 @@ class LocalWeatherViewController: UIViewController, LocationServiceDelegate {
 
 extension LocalWeatherViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 40
+        return forecastResult.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ForecastCell", for: indexPath) as! ForecastDataCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ForecastDataCell", for: indexPath) as! ForecastDataCell
+        let forecast = forecastResult[indexPath.item]
         cell.configureForForecastCell(forecast)
         return cell
     }
     
+}
+
+extension LocalWeatherViewController : UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        return CGSize(width: 90.0, height: 110.0)
+    }
 }
 
 

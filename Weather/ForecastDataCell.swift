@@ -14,10 +14,12 @@ class ForecastDataCell: UICollectionViewCell {
     @IBOutlet weak var forecastTemp: UILabel!
     @IBOutlet weak var forecastImageView: UIImageView!
     
+    let tempEmoji = "℃"
+    
     func configureForForecastCell(_ forecastResult: Forecast)  {
         
         if let temp = forecastResult.temp {
-            forecastTemp.text = String(temp)
+            forecastTemp.text = String(temp) + String(tempEmoji)
         }
         if let time = forecastResult.dt_txt {
             forecastTime.text = time

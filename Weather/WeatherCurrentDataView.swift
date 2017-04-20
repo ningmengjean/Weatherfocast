@@ -55,7 +55,8 @@ class WeatherCurrentDataView: UIView {
         return cardinals[index]
         
     }
-
+    
+    let tempEmoji = "˚"
     var result: SearchResult? {
         didSet {
             guard let result = result else {
@@ -66,7 +67,7 @@ class WeatherCurrentDataView: UIView {
                 cityNameLable.text = cityName
             }
             if let temp = result.temp {
-                tempLabel.text = String(temp)
+                tempLabel.text = String(temp) + String(tempEmoji)
             }
             if let weatherDescription = result.description {
                 weatherDescriptionLable.text = weatherDescription
