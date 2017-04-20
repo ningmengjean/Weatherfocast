@@ -34,20 +34,12 @@ class ForecastDays: AnyObject {
         return dateFormatter.string(from: time)
     }
     
-    func getDayOfWeek(_ today:String) -> String? {
-        let formatter  = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        guard let todayDate = formatter.date(from: today) else { return nil }
-        let myCalendar = Calendar(identifier: .gregorian)
-        let weekDay = myCalendar.component(.weekday, from: todayDate)
-        return String(weekDay)
-    }
     
     init(json: JSON){
         if let date = json["dt"].double {
-            dt = getDayOfWeek(unixTimeConvertion(date))
+            dt = unixTimeConvertion(date)
         }
-        icon = json["weather"]["icon"].string
+        icon = json["weather"][0]["icon"].string
         tempmax = json["temp"]["max"].int
         tempmin = json["temp"]["min"].int
         

@@ -54,13 +54,6 @@
                                             </imageView>
                                         </subviews>
                                     </stackView>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eGc-hY-dNw">
-                                        <rect key="frame" x="26" y="200" width="46" height="30"/>
-                                        <state key="normal" title="Button"/>
-                                        <connections>
-                                            <action selector="pressButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="xU6-eh-p2q"/>
-                                        </connections>
-                                    </button>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fnz-bq-F6o">
                                         <rect key="frame" x="20" y="230" width="335" height="43"/>
                                         <subviews>
@@ -95,14 +88,21 @@
                                         </subviews>
                                         <color key="backgroundColor" red="0.0" green="0.63137257099999999" blue="0.87058824300000004" alpha="1" colorSpace="calibratedRGB"/>
                                     </view>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eGc-hY-dNw">
+                                        <rect key="frame" x="20" y="192" width="46" height="30"/>
+                                        <state key="normal" title="Button"/>
+                                        <connections>
+                                            <action selector="pressButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="xU6-eh-p2q"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.0" green="0.63137257099999999" blue="0.87058824300000004" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstItem="fnz-bq-F6o" firstAttribute="centerX" secondItem="z80-wo-Spy" secondAttribute="centerX" id="2lg-cY-re9"/>
-                                    <constraint firstItem="Qhe-sb-1UG" firstAttribute="leading" secondItem="eGc-hY-dNw" secondAttribute="trailing" constant="28" id="9Sd-92-CxW"/>
+                                    <constraint firstItem="Qhe-sb-1UG" firstAttribute="leading" secondItem="eGc-hY-dNw" secondAttribute="trailing" constant="34" id="9Sd-92-CxW"/>
                                     <constraint firstItem="Qhe-sb-1UG" firstAttribute="top" secondItem="z80-wo-Spy" secondAttribute="top" constant="50" id="BE1-IV-FxN"/>
                                     <constraint firstItem="fnz-bq-F6o" firstAttribute="top" secondItem="Qhe-sb-1UG" secondAttribute="bottom" constant="8" id="X8k-O0-Zao"/>
-                                    <constraint firstItem="fnz-bq-F6o" firstAttribute="top" secondItem="eGc-hY-dNw" secondAttribute="bottom" id="mee-4S-cxK"/>
+                                    <constraint firstItem="fnz-bq-F6o" firstAttribute="top" secondItem="eGc-hY-dNw" secondAttribute="bottom" constant="8" id="mee-4S-cxK"/>
                                     <constraint firstAttribute="bottom" secondItem="fnz-bq-F6o" secondAttribute="bottom" id="n96-m3-Itk"/>
                                     <constraint firstItem="fnz-bq-F6o" firstAttribute="leading" secondItem="z80-wo-Spy" secondAttribute="leading" constant="20" id="tOv-yn-BI9"/>
                                     <constraint firstItem="Qhe-sb-1UG" firstAttribute="centerX" secondItem="z80-wo-Spy" secondAttribute="centerX" id="uoF-1e-ZW9"/>
@@ -121,7 +121,7 @@
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="jSJ-yq-1Jk" customClass="forecastDaysView" customModule="Weather" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="393" width="375" height="274"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
                             </tableView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="ZUz-7d-EmF" customClass="ForcastDataView" customModule="Weather" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="273" width="375" height="120"/>

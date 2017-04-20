@@ -90,9 +90,9 @@ class LocalWeatherViewController: UIViewController, LocationServiceDelegate {
         super.viewDidLoad()
         locationService.delegate = self
         forecastData.register(UINib(nibName: "ForecastDataCell", bundle: Bundle.main), forCellWithReuseIdentifier: "ForecastDataCell")
-        forecastDays.register(UINib(nibName: "ForecastDaysCell", bundle: nil), forCellReuseIdentifier: "ForecastDaysCell")
+        forecastDays.register(UINib(nibName: "ForecastDaysTableViewCell", bundle: nil), forCellReuseIdentifier: "ForecastDaysCell")
         forecastDays.rowHeight = UITableViewAutomaticDimension
-        forecastDays.estimatedRowHeight = 44.0
+        forecastDays.estimatedRowHeight = 100.0
     }
 
     func getLocation(_service: LocationService, location: CLLocation) {
@@ -183,9 +183,9 @@ extension LocalWeatherViewController : UICollectionViewDelegateFlowLayout {
 
 extension LocalWeatherViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt  indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ForecastDaysCell", for: indexPath) as! ForecastDaysCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ForecastDaysCell", for: indexPath) as! ForecastDaysTableViewCell
         let forecastDays = forecastDaysResult[indexPath.row]
-        cell.configureForForecastDaysCell(forecastDays)
+        cell.configureForecastDaysCell(forecastDays)
         return cell
     }
     
