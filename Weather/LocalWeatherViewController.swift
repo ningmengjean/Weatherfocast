@@ -38,13 +38,18 @@ class LocalWeatherViewController: UIViewController, LocationServiceDelegate {
         return forecastUrl!
     }
     
+    func forecastDaysWithLonAndLat(_ lon: Double, lat: Double) -> URL {
+        let forecastDaysUrlString = String(format: "http://api.openweathermap.org/data/2.5/forecast/daily?lat=%@&lon=%@&cnt=7&units=metric&appid=42fa1d43af611380ae540646f4a2c783", String(lat), String(lon))
+        let forecastDaysUrl = URL(string: forecastDaysUrlString)
+        return forecastDaysUrl!
+    }
+    
     @IBAction func pressButton(_ sender: Any) {
         locationService.requestLocation()
     }
     
     @IBOutlet weak var weatherCurrentData: WeatherCurrentDataView!
   
-    
     @IBOutlet weak var forecastData: UICollectionView! {
         didSet {
             forecastData.delegate = self
@@ -52,9 +57,22 @@ class LocalWeatherViewController: UIViewController, LocationServiceDelegate {
         }
     }
     
+    @IBOutlet weak var forecastDays: UITableView! {
+        didSet {
+            forecastDays.delegate = self
+            forecastDays.dataSource = self
+        }
+    }
+    
     var forecastResult = [Forecast]() {
         didSet {
             forecastData.reloadData()
+        }
+    }
+    
+    var forecastDaysResult = [ForecastDays]() {
+        didSet {
+            forecastDays.reloadData()
         }
     }
     
@@ -72,11 +90,15 @@ class LocalWeatherViewController: UIViewController, LocationServiceDelegate {
         super.viewDidLoad()
         locationService.delegate = self
         forecastData.register(UINib(nibName: "ForecastDataCell", bundle: Bundle.main), forCellWithReuseIdentifier: "ForecastDataCell")
+        forecastDays.register(UINib(nibName: "ForecastDaysCell", bundle: nil), forCellReuseIdentifier: "ForecastDaysCell")
+        forecastDays.rowHeight = UITableViewAutomaticDimension
+        forecastDays.estimatedRowHeight = 44.0
     }
 
     func getLocation(_service: LocationService, location: CLLocation) {
         getCurrentWeatherDataWithLocation(location)
         getForecastWeatherDataWithLocation(location)
+        getForecastDaysWeatherDataWithLocaiton(location)
     }
     
     func getCurrentWeatherDataWithLocation(_ location: CLLocation) {
@@ -116,6 +138,24 @@ class LocalWeatherViewController: UIViewController, LocationServiceDelegate {
         })
         dataTask.resume()
     }
+    
+    func getForecastDaysWeatherDataWithLocaiton(_ location: CLLocation) {
+        let lon = location.coordinate.longitude
+        let lat = location.coordinate.latitude
+        let forecastDaysUrl = forecastDaysWithLonAndLat(lon, lat: lat)
+        let session = URLSession.shared
+        let dataTask = session.dataTask(with: forecastDaysUrl, completionHandler: {
+            data, response, error in
+            if let error = error {
+                print("Failure! \(error)")
+            } else if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+                DispatchQueue.main.async {
+                    self.forecastDaysResult = self.parseJSON(data!)["list"].arrayValue.map { ForecastDays(json: $0) }
+                }
+            }
+        })
+        dataTask.resume()
+    }
 }
 
 extension LocalWeatherViewController: UICollectionViewDelegate, UICollectionViewDataSource {
@@ -139,6 +179,24 @@ extension LocalWeatherViewController : UICollectionViewDelegateFlowLayout {
         
         return CGSize(width: 90.0, height: 110.0)
     }
+}
+
+extension LocalWeatherViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, cellForRowAt  indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ForecastDaysCell", for: indexPath) as! ForecastDaysCell
+        let forecastDays = forecastDaysResult[indexPath.row]
+        cell.configureForForecastDaysCell(forecastDays)
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return forecastDaysResult.count
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
 }
 
 

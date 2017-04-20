@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ForecastDaysCell" id="KGk-i7-Jjw" customClass="ForecastDaysTableViewCell" customModule="Weather" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="89n-6c-kWb">
+                        <rect key="frame" x="7" y="12" width="50" height="20"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="20" id="HhM-KM-KQK"/>
+                            <constraint firstAttribute="width" constant="50" id="K7U-BJ-56F"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q1o-eA-RxE">
+                        <rect key="frame" x="263" y="12" width="50" height="20"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="20" id="6kt-On-h6U"/>
+                            <constraint firstAttribute="width" constant="50" id="mTi-cj-nr5"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="cEB-Gd-YhE">
+                        <rect key="frame" x="140" y="2" width="40" height="40"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="40" id="tWf-Yn-BrZ"/>
+                            <constraint firstAttribute="height" constant="40" id="uF1-hf-gPN"/>
+                        </constraints>
+                    </imageView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="89n-6c-kWb" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="D7r-aD-cjg"/>
+                    <constraint firstItem="q1o-eA-RxE" firstAttribute="leading" secondItem="cEB-Gd-YhE" secondAttribute="trailing" constant="83" id="X9K-dN-gcL"/>
+                    <constraint firstItem="cEB-Gd-YhE" firstAttribute="leading" secondItem="89n-6c-kWb" secondAttribute="trailing" constant="83" id="ZnT-RF-KN0"/>
+                    <constraint firstItem="cEB-Gd-YhE" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="2" id="diM-n2-DO7"/>
+                    <constraint firstAttribute="trailing" secondItem="q1o-eA-RxE" secondAttribute="trailing" constant="7" id="dpk-PL-JDL"/>
+                    <constraint firstAttribute="bottom" secondItem="cEB-Gd-YhE" secondAttribute="bottom" constant="2" id="g48-D2-Yja"/>
+                    <constraint firstItem="89n-6c-kWb" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="7" id="lgW-38-fgb"/>
+                    <constraint firstAttribute="bottom" secondItem="89n-6c-kWb" secondAttribute="bottom" constant="12" id="qUS-QX-wZ8"/>
+                    <constraint firstItem="q1o-eA-RxE" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="sri-2y-avx"/>
+                    <constraint firstAttribute="bottom" secondItem="q1o-eA-RxE" secondAttribute="bottom" constant="12" id="z73-hc-iQ1"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="forecastDaysImageView" destination="cEB-Gd-YhE" id="xx9-Om-HNN"/>
+                <outlet property="forecastDaysTemp" destination="q1o-eA-RxE" id="1Gk-4K-VTK"/>
+                <outlet property="forecastDaysTime" destination="89n-6c-kWb" id="WtI-IG-K3s"/>
+            </connections>
+            <point key="canvasLocation" x="-73" y="-82"/>
+        </tableViewCell>
+    </objects>
+</document>

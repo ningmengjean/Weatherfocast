@@ -119,7 +119,7 @@
                                     <outlet property="windLable" destination="7jt-2K-eVo" id="bg7-X0-eWW"/>
                                 </connections>
                             </view>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="jSJ-yq-1Jk">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="jSJ-yq-1Jk" customClass="forecastDaysView" customModule="Weather" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="393" width="375" height="274"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </tableView>
@@ -168,6 +168,7 @@
                     </view>
                     <connections>
                         <outlet property="forecastData" destination="ZUz-7d-EmF" id="eV4-Vb-df0"/>
+                        <outlet property="forecastDays" destination="jSJ-yq-1Jk" id="8ZM-2r-Uz6"/>
                         <outlet property="weatherCurrentData" destination="z80-wo-Spy" id="Nwq-DO-g5U"/>
                     </connections>
                 </viewController>
