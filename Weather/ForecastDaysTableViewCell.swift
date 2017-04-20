@@ -19,7 +19,7 @@ class ForecastDaysTableViewCell: UITableViewCell {
             forecastDaysTime.text = date
         }
         if let tempmax = forecastDaysResult.tempmax, let tempmin = forecastDaysResult.tempmin {
-            forecastDaysTemp.text = String(tempmax) + " ~ " + String(tempmin)
+            forecastDaysTemp.text = String(tempmin) + " ~ " + String(tempmax)
         }
         if let icon = forecastDaysResult.icon, let url = URL(string: "http://openweathermap.org/img/w/\(icon).png") {
             forecastDaysImageView.kf.setImage(with: url)

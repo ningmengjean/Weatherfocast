@@ -54,7 +54,7 @@
                     <constraint firstItem="RdQ-Bq-83m" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="qxo-kO-HdR"/>
                 </constraints>
             </tableViewCellContentView>
-            <color key="backgroundColor" red="0.015686274510000001" green="0.66274509800000003" blue="0.92156862750000001" alpha="1" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" red="0.0" green="0.63137254899999995" blue="0.87058823529999996" alpha="1" colorSpace="calibratedRGB"/>
             <connections>
                 <outlet property="forecastDaysImageView" destination="cEB-Gd-YhE" id="xx9-Om-HNN"/>
                 <outlet property="forecastDaysTemp" destination="q1o-eA-RxE" id="1Gk-4K-VTK"/>
