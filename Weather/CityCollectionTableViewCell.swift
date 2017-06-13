@@ -10,15 +10,19 @@ import UIKit
 
 class CityCollectionTableViewCell: UITableViewCell {
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
+    @IBOutlet weak var cityNameLable: UILabel!
+
+    var localCity: SearchResult?
+    
+    func configureWithLocalCity(_ localCity: SearchResult) {
+        if let cityName = localCity.cityName {
+            cityNameLable.text = cityName
+        }
     }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
+    
+    func configureWithAddNewCity(_ addNewCity: String) {
+         cityNameLable.text = addNewCity
     }
-
+    
+    
 }

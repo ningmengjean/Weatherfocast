@@ -8,28 +8,59 @@
 
 import UIKit
 
+protocol SearchCityViewControllerDelegate: class {
+    func shouldSearchText(_ text: String)
+}
+
+
+
 class SearchCityViewController: UIViewController {
 
+    @IBOutlet weak var searchBar: UISearchBar! 
+ 
+    @IBOutlet weak var tableView: UITableView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        tableView.contentInset = UIEdgeInsets(top: 64, left: 0, bottom: 0, right: 0)
+        tableView.register(UINib(nibName: "NothingFoundCell", bundle: nil), forCellReuseIdentifier: "NothingFoundCell")
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+    weak var delegate: SearchCityViewControllerDelegate?
 }
+
+extension SearchCityViewController: UISearchBarDelegate {
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        guard let text = searchBar.text else { return }
+        delegate?.shouldSearchText(text)
+    }
+}
+
+extension SearchCityViewController: UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView,
+                   cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+
+        return UITableViewCell()
+    }
+    
+}
+
+extension SearchCityViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+}
+
+
+
+
+
+
+
+

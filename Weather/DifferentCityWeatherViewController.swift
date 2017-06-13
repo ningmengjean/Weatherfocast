@@ -12,24 +12,80 @@ class DifferentCityWeatherViewController: UIPageViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        dataSource = self
+        if let firstViewController = orderedViewControllers.first {
+            setViewControllers([firstViewController],
+                               direction: .forward,
+                               animated: true,
+                               completion: nil)
+        }
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    func newViewController() -> UIViewController {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateViewController(withIdentifier: "LocalWeatherViewController") as! LocalWeatherViewController
+        return controller
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+    private(set) lazy var orderedViewControllers: [UIViewController] = {
+        
+        var cityCollection = [String]()
+        let defaults = UserDefaults.standard
+        if let savedCityCollection = defaults.stringArray(forKey: "cityName") {
+            cityCollection = savedCityCollection
+        }
+        var controllers = [self.newViewController()]
+        (0..<cityCollection.count).forEach { idx in
+            let controller = self.newViewController() as! LocalWeatherViewController
+            _ = controller.view
+            if idx == 0 {
+                controller.startLocation()
+            } else {
+                controller.cityName = cityCollection[idx - 1]
+            }
+            controllers.append(controller)
+        }
+        return controllers
+        }()
+    
 }
+
+extension DifferentCityWeatherViewController: UIPageViewControllerDataSource {
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
+        guard let viewControllerIndex = orderedViewControllers.index(of: viewController as! LocalWeatherViewController) else {
+            return nil
+        }
+        
+        let nextIndex = viewControllerIndex + 1
+        let orderedViewControllersCount = orderedViewControllers.count
+        
+        guard orderedViewControllersCount != nextIndex else {
+            return nil
+        }
+        
+        guard orderedViewControllersCount > nextIndex else {
+            return nil
+        }
+        
+        return orderedViewControllers[nextIndex]
+    }
+    
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
+        guard let viewControllerIndex = orderedViewControllers.index(of: viewController as! LocalWeatherViewController) else {
+            return nil
+        }
+        
+        let previousIndex = viewControllerIndex - 1
+        
+        guard previousIndex >= 0 else {
+            return nil
+        }
+        
+        guard orderedViewControllers.count > previousIndex else {
+            return nil
+        }
+        
+        return orderedViewControllers[previousIndex]
+    }
+}
+
+
