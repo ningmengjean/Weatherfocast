@@ -58,6 +58,8 @@ extension CityCollectionViewController: UITableViewDataSource {
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CityCollectionCell", for: indexPath) as!
         CityCollectionTableViewCell
+        cell.backgroundColor = UIColor.init(red: 0, green: 161, blue: 222, alpha: 0)
+       
         switch indexPath.section {
             case 0 :
                 if let localCityCell = locationResult {
@@ -67,7 +69,6 @@ extension CityCollectionViewController: UITableViewDataSource {
                 
                 let cityCollectionCell = cityCollection
                 cell.configureWithAddNewCity(cityCollectionCell[indexPath.row])
-            
             default: break
         }
          return cell

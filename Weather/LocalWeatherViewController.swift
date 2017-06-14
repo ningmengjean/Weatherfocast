@@ -145,6 +145,10 @@ class LocalWeatherViewController: UIViewController, LocationServiceDelegate {
         super.viewDidLoad()
         locationService.delegate = self
         forecastData.register(UINib(nibName: "ForecastDataCell", bundle: Bundle.main), forCellWithReuseIdentifier: "ForecastDataCell")
+        let view = forecastData.viewWithTag(100)
+        view?.layer.borderWidth = 1
+        view?.layer.borderColor = UIColor.white.cgColor
+        
         forecastDays.register(UINib(nibName: "ForecastDaysTableViewCell", bundle: nil), forCellReuseIdentifier: "ForecastDaysCell")
         forecastDays.rowHeight = UITableViewAutomaticDimension
         forecastDays.estimatedRowHeight = 100.0

@@ -17,11 +17,13 @@ class CityCollectionTableViewCell: UITableViewCell {
     func configureWithLocalCity(_ localCity: SearchResult) {
         if let cityName = localCity.cityName {
             cityNameLable.text = cityName
+            cityNameLable.textColor = UIColor.white
         }
     }
     
     func configureWithAddNewCity(_ addNewCity: String) {
          cityNameLable.text = addNewCity
+         cityNameLable.textColor = UIColor.white
     }
     
     
