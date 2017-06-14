@@ -64,7 +64,7 @@
                                         </subviews>
                                     </stackView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fnz-bq-F6o">
-                                        <rect key="frame" x="20" y="180" width="335" height="29"/>
+                                        <rect key="frame" x="20" y="172" width="335" height="37"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="sunrise" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mnq-zh-lvJ">
                                                 <rect key="frame" x="0.0" y="19" width="168" height="20"/>
@@ -110,8 +110,8 @@
                                     <constraint firstItem="fnz-bq-F6o" firstAttribute="centerX" secondItem="z80-wo-Spy" secondAttribute="centerX" id="2lg-cY-re9"/>
                                     <constraint firstItem="Qhe-sb-1UG" firstAttribute="leading" secondItem="eGc-hY-dNw" secondAttribute="trailing" constant="34" id="9Sd-92-CxW"/>
                                     <constraint firstItem="Qhe-sb-1UG" firstAttribute="top" secondItem="z80-wo-Spy" secondAttribute="top" id="BE1-IV-FxN"/>
-                                    <constraint firstItem="fnz-bq-F6o" firstAttribute="top" secondItem="Qhe-sb-1UG" secondAttribute="bottom" constant="8" id="X8k-O0-Zao"/>
-                                    <constraint firstItem="fnz-bq-F6o" firstAttribute="top" secondItem="eGc-hY-dNw" secondAttribute="bottom" constant="8" id="mee-4S-cxK"/>
+                                    <constraint firstItem="fnz-bq-F6o" firstAttribute="top" secondItem="Qhe-sb-1UG" secondAttribute="bottom" id="X8k-O0-Zao"/>
+                                    <constraint firstItem="fnz-bq-F6o" firstAttribute="top" secondItem="eGc-hY-dNw" secondAttribute="bottom" id="mee-4S-cxK"/>
                                     <constraint firstAttribute="bottom" secondItem="fnz-bq-F6o" secondAttribute="bottom" id="n96-m3-Itk"/>
                                     <constraint firstItem="fnz-bq-F6o" firstAttribute="leading" secondItem="z80-wo-Spy" secondAttribute="leading" constant="20" id="tOv-yn-BI9"/>
                                     <constraint firstItem="Qhe-sb-1UG" firstAttribute="centerX" secondItem="z80-wo-Spy" secondAttribute="centerX" id="uoF-1e-ZW9"/>
@@ -167,9 +167,9 @@
                                     <segue destination="cYY-qr-nT1" kind="show" identifier="Search" id="2vu-i9-HDG"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Dp-9S-ukp">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Dp-9S-ukp">
                                 <rect key="frame" x="10" y="26" width="59" height="30"/>
-                                <state key="normal" title="List">
+                                <state key="normal" image="list">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
                                 <connections>
@@ -181,7 +181,7 @@
                                 <constraints>
                                     <constraint firstAttribute="width" constant="39" id="fpH-ur-L0b"/>
                                 </constraints>
-                                <state key="normal" title="heart" image="unheart"/>
+                                <state key="normal" image="unstar"/>
                                 <connections>
                                     <action selector="addFav:" destination="BYZ-38-t0r" eventType="touchUpInside" id="sal-Ae-9U0"/>
                                 </connections>
@@ -329,6 +329,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="unheart" width="224" height="199"/>
+        <image name="list" width="30" height="30"/>
+        <image name="unstar" width="19" height="19"/>
     </resources>
 </document>

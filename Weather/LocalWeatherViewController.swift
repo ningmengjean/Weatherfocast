@@ -98,8 +98,8 @@ class LocalWeatherViewController: UIViewController, LocationServiceDelegate {
         guard let cityName = weatherCurrentData.cityNameLable.text else {
             return
         }
-        if sender.image(for: .normal) == UIImage(named: "unheart") {
-            sender.setImage(UIImage(named: "heart"), for: .normal)
+        if sender.image(for: .normal) == UIImage(named: "unstar") {
+            sender.setImage(UIImage(named: "star"), for: .normal)
             if var arr = UserDefaults.standard.array(forKey: "cityName") as? [String] {
                 if !arr.contains(cityName) {
                     arr.append(cityName)
@@ -108,8 +108,8 @@ class LocalWeatherViewController: UIViewController, LocationServiceDelegate {
             } else {
                 UserDefaults.standard.set([cityName], forKey: "cityName")
             }
-        } else if sender.image(for: .normal) == UIImage(named: "heart") {
-            sender.setImage(UIImage(named:"unheart"), for: .normal)
+        } else if sender.image(for: .normal) == UIImage(named: "star") {
+            sender.setImage(UIImage(named:"unstar"), for: .normal)
             if var arr = UserDefaults.standard.array(forKey: "cityName") as? [String] {
                 if let indx = arr.index(of: cityName) {
                     arr.remove(at: indx)
@@ -198,6 +198,7 @@ class LocalWeatherViewController: UIViewController, LocationServiceDelegate {
     var locationResult: SearchResult?
     
     func getCurrentWeatherDataWithLocation(_ location: CLLocation) {
+        favHeart.isHidden = true
         spinner.startAnimating()
         let lon = location.coordinate.longitude
         let lat = location.coordinate.latitude
@@ -206,6 +207,7 @@ class LocalWeatherViewController: UIViewController, LocationServiceDelegate {
         let dataTask = session.dataTask(with: url, completionHandler: {
             data, response, error in
             self.spinner.stopAnimating()
+            self.favHeart.isHidden = false
             if let error = error {
                 print("Failure! \(error)")
                 DispatchQueue.main.async {
@@ -259,11 +261,13 @@ class LocalWeatherViewController: UIViewController, LocationServiceDelegate {
     }
     
     func getCurrentWeatherDataWithCityName(_ cityName: String) {
+        favHeart.isHidden = true
         spinner.startAnimating()
         let url = urlWithCityName(cityName)
         let session = URLSession.shared
         let dataTask = session.dataTask(with: url, completionHandler: {
             data, response, error in
+            self.favHeart.isHidden = false
             self.spinner.stopAnimating()
             if let error = error {
                 print("Failure! \(error)")
@@ -278,13 +282,13 @@ class LocalWeatherViewController: UIViewController, LocationServiceDelegate {
                     if let cityName = self.result?.cityName {
                         if let arr = UserDefaults.standard.array(forKey: "cityName") as? [String] {
                             if arr.contains(cityName) {
-                                self.favHeart.setImage(UIImage(named:"heart"), for: .normal)
+                                self.favHeart.setImage(UIImage(named:"star"), for: .normal)
                             } else {
-                                self.favHeart.setImage(UIImage(named:"unheart"), for: .normal)
+                                self.favHeart.setImage(UIImage(named:"unstar"), for: .normal)
                             }
                         }
                     } else {
-                        self.favHeart.setImage(UIImage(named:"unheart"), for: .normal)
+                        self.favHeart.setImage(UIImage(named:"unstar"), for: .normal)
                     }
                 }
             }
