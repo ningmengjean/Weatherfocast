@@ -16,8 +16,6 @@ import LatLongToTimezone
 
 import CoreLocation
 
-
-
 fileprivate extension String {
     fileprivate func urlEncode() -> String {
         guard let encode = self.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else { return "" }
@@ -27,50 +25,6 @@ fileprivate extension String {
 
 class LocalWeatherViewController: UIViewController, LocationServiceDelegate {
     
-    enum AcceptType {
-        case cityName(String)
-        case cityLocation(CLLocationCoordinate2D)
-    }
-    
-    var acceptType: AcceptType = .cityName("")
-    
-    
-    func urlWithLonAndLat(_ lon: Double, lat: Double) -> URL {
-        let urlString = String(format: "http://api.openweathermap.org/data/2.5/weather?lat=%@&lon=%@&units=metric&appid=42fa1d43af611380ae540646f4a2c783", String(lat), String(lon))
-        
-        let url = URL(string: urlString)
-        return url!
-    }
-    
-    func forecastUrlWithLonAndLat(_ lon: Double, lat: Double) -> URL {
-        let forecastUrlString = String(format: "http://api.openweathermap.org/data/2.5/forecast?lat=%@&lon=%@&cnt=40&units=metric&appid=42fa1d43af611380ae540646f4a2c783", String(lat), String(lon))
-        let forecastUrl = URL(string: forecastUrlString)
-        return forecastUrl!
-    }
-    
-    func forecastDaysWithLonAndLat(_ lon: Double, lat: Double) -> URL {
-        let forecastDaysUrlString = String(format: "http://api.openweathermap.org/data/2.5/forecast/daily?lat=%@&lon=%@&cnt=7&units=metric&appid=42fa1d43af611380ae540646f4a2c783", String(lat), String(lon))
-        let forecastDaysUrl = URL(string: forecastDaysUrlString)
-        return forecastDaysUrl!
-    }
-    
-    func urlWithCityName(_ cityName: String) -> URL {
-        let urlString = String(format: "http://api.openweathermap.org/data/2.5/weather?q=%@&units=metric&appid=42fa1d43af611380ae540646f4a2c783", cityName.urlEncode())
-        let url = URL(string: urlString)
-        return url!
-    }
-    
-    func forecastWithCityName(_ cityName: String) -> URL {
-        let forecastUrlString = String(format: "http://api.openweathermap.org/data/2.5/forecast?q=%@&units=metric&appid=42fa1d43af611380ae540646f4a2c783", cityName.urlEncode())
-        let forecastUrl = URL(string: forecastUrlString)
-        return forecastUrl!
-    }
-    
-    func forecastDaysWithCityName(_ cityName: String) -> URL {
-        let forecastDaysUrlString = String(format: "http://api.openweathermap.org/data/2.5/forecast/daily?q=%@&cnt=7&units=metric&appid=42fa1d43af611380ae540646f4a2c783", cityName.urlEncode())
-        let forecastDaysUrl = URL(string: forecastDaysUrlString)
-        return forecastDaysUrl!
-    }
     @IBOutlet weak var favHeart: UIButton!
     
     @IBAction func pressButton(_ sender: Any) {
@@ -154,17 +108,6 @@ class LocalWeatherViewController: UIViewController, LocationServiceDelegate {
         forecastDays.estimatedRowHeight = 100.0
     }
     
-    var cityName: String? {
-        didSet {
-            guard let cityName = cityName else {
-                return
-            }
-            getCurrentWeatherDataWithCityName(cityName)
-            getForecastDataWithCityName(cityName)
-            getForecastDaysWeatherDataWithCityName(cityName)
-        }
-    }
-    
     func startLocation() {
         locationService.requestLocation()
     }
@@ -187,6 +130,54 @@ class LocalWeatherViewController: UIViewController, LocationServiceDelegate {
         getForecastDaysWeatherDataWithLocaiton(location)
     }
     
+    var cityName: String? {
+        didSet {
+            guard let cityName = cityName else {
+                return
+            }
+            getCurrentWeatherDataWithCityName(cityName)
+            getForecastDataWithCityName(cityName)
+            getForecastDaysWeatherDataWithCityName(cityName)
+        }
+    }
+    
+    func urlWithLonAndLat(_ lon: Double, lat: Double) -> URL {
+        let urlString = String(format: "http://api.openweathermap.org/data/2.5/weather?lat=%@&lon=%@&units=metric&appid=42fa1d43af611380ae540646f4a2c783", String(lat), String(lon))
+        
+        let url = URL(string: urlString)
+        return url!
+    }
+    
+    func forecastUrlWithLonAndLat(_ lon: Double, lat: Double) -> URL {
+        let forecastUrlString = String(format: "http://api.openweathermap.org/data/2.5/forecast?lat=%@&lon=%@&cnt=40&units=metric&appid=42fa1d43af611380ae540646f4a2c783", String(lat), String(lon))
+        let forecastUrl = URL(string: forecastUrlString)
+        return forecastUrl!
+    }
+    
+    func forecastDaysWithLonAndLat(_ lon: Double, lat: Double) -> URL {
+        let forecastDaysUrlString = String(format: "http://api.openweathermap.org/data/2.5/forecast/daily?lat=%@&lon=%@&cnt=7&units=metric&appid=42fa1d43af611380ae540646f4a2c783", String(lat), String(lon))
+        let forecastDaysUrl = URL(string: forecastDaysUrlString)
+        return forecastDaysUrl!
+    }
+    
+    func urlWithCityName(_ cityName: String) -> URL {
+        let urlString = String(format: "http://api.openweathermap.org/data/2.5/weather?q=%@&units=metric&appid=42fa1d43af611380ae540646f4a2c783", cityName.urlEncode())
+        let url = URL(string: urlString)
+        return url!
+    }
+    
+    func forecastWithCityName(_ cityName: String) -> URL {
+        let forecastUrlString = String(format: "http://api.openweathermap.org/data/2.5/forecast?q=%@&units=metric&appid=42fa1d43af611380ae540646f4a2c783", cityName.urlEncode())
+        let forecastUrl = URL(string: forecastUrlString)
+        return forecastUrl!
+    }
+    
+    func forecastDaysWithCityName(_ cityName: String) -> URL {
+        let forecastDaysUrlString = String(format: "http://api.openweathermap.org/data/2.5/forecast/daily?q=%@&cnt=7&units=metric&appid=42fa1d43af611380ae540646f4a2c783", cityName.urlEncode())
+        let forecastDaysUrl = URL(string: forecastDaysUrlString)
+        return forecastDaysUrl!
+    }
+    
     func showNetworkError() {
         let alert = UIAlertController(
             title: "Whoops...",
@@ -200,7 +191,7 @@ class LocalWeatherViewController: UIViewController, LocationServiceDelegate {
     
     var result: SearchResult?
     var locationResult: SearchResult?
-    
+
     func getCurrentWeatherDataWithLocation(_ location: CLLocation) {
         favHeart.isHidden = true
         spinner.startAnimating()
@@ -222,6 +213,17 @@ class LocalWeatherViewController: UIViewController, LocationServiceDelegate {
                 self.locationResult = SearchResult(json: json)
                 DispatchQueue.main.async {
                     self.weatherCurrentData.result = self.locationResult
+                    if let cityName = self.locationResult?.cityName {
+                        if let arr = UserDefaults.standard.array(forKey: "cityName") as? [String] {
+                            if arr.contains(cityName) {
+                                self.favHeart.setImage(UIImage(named:"star"), for: .normal)
+                            } else {
+                                self.favHeart.setImage(UIImage(named:"unstar"), for: .normal)
+                            }
+                        }
+                    } else {
+                        self.favHeart.setImage(UIImage(named:"unstar"), for: .normal)
+                    }
                 }
             }
         })
@@ -310,10 +312,10 @@ class LocalWeatherViewController: UIViewController, LocationServiceDelegate {
             } else if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
                 DispatchQueue.main.async {
                     self.forecastResult = self.parseJSON(data!)["list"].arrayValue.map { Forecast(json: $0)}
-            }
+                }
             }
         })
-            dataTask.resume()
+        dataTask.resume()
     }
     
     func getForecastDaysWeatherDataWithCityName(_ cityName: String) {
@@ -331,8 +333,10 @@ class LocalWeatherViewController: UIViewController, LocationServiceDelegate {
         })
         dataTask.resume()
     }
+
 }
 
+   
 extension LocalWeatherViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return forecastResult.count
