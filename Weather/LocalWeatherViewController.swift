@@ -16,6 +16,8 @@ import LatLongToTimezone
 
 import CoreLocation
 
+import Moya
+
 fileprivate extension String {
     fileprivate func urlEncode() -> String {
         guard let encode = self.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) else { return "" }
@@ -32,7 +34,7 @@ class LocalWeatherViewController: UIViewController, LocationServiceDelegate {
     }
     
     @IBOutlet weak var weatherCurrentData: WeatherCurrentDataView!
-  
+    
     @IBOutlet weak var forecastData: UICollectionView! {
         didSet {
             forecastData.delegate = self
@@ -72,7 +74,7 @@ class LocalWeatherViewController: UIViewController, LocationServiceDelegate {
             }
         }
     }
-  
+    
     var forecastResult = [Forecast]() {
         didSet {
             forecastData.reloadData()
@@ -123,7 +125,7 @@ class LocalWeatherViewController: UIViewController, LocationServiceDelegate {
             controller.locationResult = locationResult
         }
     }
-
+    
     func getLocation(_service: LocationService, location: CLLocation) {
         getCurrentWeatherDataWithLocation(location)
         getForecastWeatherDataWithLocation(location)
@@ -141,43 +143,6 @@ class LocalWeatherViewController: UIViewController, LocationServiceDelegate {
         }
     }
     
-    func urlWithLonAndLat(_ lon: Double, lat: Double) -> URL {
-        let urlString = String(format: "http://api.openweathermap.org/data/2.5/weather?lat=%@&lon=%@&units=metric&appid=42fa1d43af611380ae540646f4a2c783", String(lat), String(lon))
-        
-        let url = URL(string: urlString)
-        return url!
-    }
-    
-    func forecastUrlWithLonAndLat(_ lon: Double, lat: Double) -> URL {
-        let forecastUrlString = String(format: "http://api.openweathermap.org/data/2.5/forecast?lat=%@&lon=%@&cnt=40&units=metric&appid=42fa1d43af611380ae540646f4a2c783", String(lat), String(lon))
-        let forecastUrl = URL(string: forecastUrlString)
-        return forecastUrl!
-    }
-    
-    func forecastDaysWithLonAndLat(_ lon: Double, lat: Double) -> URL {
-        let forecastDaysUrlString = String(format: "http://api.openweathermap.org/data/2.5/forecast/daily?lat=%@&lon=%@&cnt=7&units=metric&appid=42fa1d43af611380ae540646f4a2c783", String(lat), String(lon))
-        let forecastDaysUrl = URL(string: forecastDaysUrlString)
-        return forecastDaysUrl!
-    }
-    
-    func urlWithCityName(_ cityName: String) -> URL {
-        let urlString = String(format: "http://api.openweathermap.org/data/2.5/weather?q=%@&units=metric&appid=42fa1d43af611380ae540646f4a2c783", cityName.urlEncode())
-        let url = URL(string: urlString)
-        return url!
-    }
-    
-    func forecastWithCityName(_ cityName: String) -> URL {
-        let forecastUrlString = String(format: "http://api.openweathermap.org/data/2.5/forecast?q=%@&units=metric&appid=42fa1d43af611380ae540646f4a2c783", cityName.urlEncode())
-        let forecastUrl = URL(string: forecastUrlString)
-        return forecastUrl!
-    }
-    
-    func forecastDaysWithCityName(_ cityName: String) -> URL {
-        let forecastDaysUrlString = String(format: "http://api.openweathermap.org/data/2.5/forecast/daily?q=%@&cnt=7&units=metric&appid=42fa1d43af611380ae540646f4a2c783", cityName.urlEncode())
-        let forecastDaysUrl = URL(string: forecastDaysUrlString)
-        return forecastDaysUrl!
-    }
-    
     func showNetworkError() {
         let alert = UIAlertController(
             title: "Whoops...",
@@ -191,25 +156,21 @@ class LocalWeatherViewController: UIViewController, LocationServiceDelegate {
     
     var result: SearchResult?
     var locationResult: SearchResult?
-
+    let provider = MoyaProvider<NetworkService>(plugins: [NetworkLoggerPlugin()])
+    
     func getCurrentWeatherDataWithLocation(_ location: CLLocation) {
         favHeart.isHidden = true
         spinner.startAnimating()
-        let lon = location.coordinate.longitude
-        let lat = location.coordinate.latitude
-        let url = urlWithLonAndLat(lon, lat: lat)
-        let session = URLSession.shared
-        let dataTask = session.dataTask(with: url, completionHandler: {
-            data, response, error in
+        provider.request(.currentWeatherByLocation(location: location)) { (result) in
             self.spinner.stopAnimating()
             self.favHeart.isHidden = false
-            if let error = error {
-                print("Failure! \(error)")
+            switch result {
+            case .failure(_):
                 DispatchQueue.main.async {
                     self.showNetworkError()
                 }
-            } else if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
-                let json = self.parseJSON(data!)
+            case .success(let moyaResponse):
+                let json = self.parseJSON(moyaResponse.data)
                 self.locationResult = SearchResult(json: json)
                 DispatchQueue.main.async {
                     self.weatherCurrentData.result = self.locationResult
@@ -226,62 +187,52 @@ class LocalWeatherViewController: UIViewController, LocationServiceDelegate {
                     }
                 }
             }
-        })
-        dataTask.resume()
+        }
     }
     
     func getForecastWeatherDataWithLocation(_ location: CLLocation) {
-        let lon = location.coordinate.longitude
-        let lat = location.coordinate.latitude
-        let forecastUrl = forecastUrlWithLonAndLat(lon, lat: lat)
-        let session = URLSession.shared
-        let dataTask = session.dataTask(with: forecastUrl, completionHandler: {
-            data, response, error in
-            if let error = error {
-                print("Failure! \(error)")
-            } else if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
-                DispatchQueue.main.async {
-                    self.forecastResult = self.parseJSON(data!)["list"].arrayValue.map { Forecast(json: $0) }
-                }
-            }
-        })
-        dataTask.resume()
-    }
-    
-    func getForecastDaysWeatherDataWithLocaiton(_ location: CLLocation) {
-        let lon = location.coordinate.longitude
-        let lat = location.coordinate.latitude
-        let forecastDaysUrl = forecastDaysWithLonAndLat(lon, lat: lat)
-        let session = URLSession.shared
-        let dataTask = session.dataTask(with: forecastDaysUrl, completionHandler: {
-            data, response, error in
-            if let error = error {
-                print("Failure! \(error)")
-            } else if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
-                DispatchQueue.main.async {
-                    self.forecastDaysResult = Array (self.parseJSON(data!)["list"].arrayValue.map { ForecastDays(json: $0) }.dropFirst())
-                }
-            }
-        })
-        dataTask.resume()
-    }
-    
-    func getCurrentWeatherDataWithCityName(_ cityName: String) {
-        favHeart.isHidden = true
-        spinner.startAnimating()
-        let url = urlWithCityName(cityName)
-        let session = URLSession.shared
-        let dataTask = session.dataTask(with: url, completionHandler: {
-            data, response, error in
-            self.favHeart.isHidden = false
-            self.spinner.stopAnimating()
-            if let error = error {
-                print("Failure! \(error)")
+        provider.request(.forecastHourlyWeatherByLocation(location: location)) { (result) in
+            switch result {
+            case .failure(_):
                 DispatchQueue.main.async {
                     self.showNetworkError()
                 }
-            } else if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
-                let json = self.parseJSON(data!)
+            case .success(let moyaResponse):
+                DispatchQueue.main.async {
+                    self.forecastResult = self.parseJSON(moyaResponse.data)["list"].arrayValue.map { Forecast(json: $0)}
+                }
+            }
+            
+        }
+    }
+    
+    func getForecastDaysWeatherDataWithLocaiton(_ location: CLLocation) {
+        provider.request(.forecastDailyWeatherByLocation(location: location)) { (result) in
+            switch result {
+            case .failure(_):
+                DispatchQueue.main.async {
+                    self.showNetworkError()
+                }
+            case .success(let moyaResponse):
+                DispatchQueue.main.async {
+                    self.forecastDaysResult = Array (self.parseJSON(moyaResponse.data)["list"].arrayValue.map { ForecastDays(json: $0) }.dropFirst())
+                }
+            }
+        }
+    }
+    func getCurrentWeatherDataWithCityName(_ cityName: String) {
+        favHeart.isHidden = true
+        spinner.startAnimating()
+        provider.request(.currentWeatherByCity(cityName: cityName)) {(result) in
+            self.spinner.stopAnimating()
+            self.favHeart.isHidden = false
+            switch result {
+            case .failure(_):
+                DispatchQueue.main.async {
+                    self.showNetworkError()
+                }
+            case .success(let moyaResponse):
+                let json = self.parseJSON(moyaResponse.data)
                 self.result = SearchResult(json: json)
                 DispatchQueue.main.async {
                     self.weatherCurrentData.result = self.result
@@ -298,45 +249,43 @@ class LocalWeatherViewController: UIViewController, LocationServiceDelegate {
                     }
                 }
             }
-        })
-        dataTask.resume()
+        }
     }
     
     func getForecastDataWithCityName(_ cityName: String) {
-        let url = forecastWithCityName(cityName)
-        let session = URLSession.shared
-        let dataTask = session.dataTask(with: url, completionHandler: {
-            data, response, error in
-            if let error = error {
-                print("Failure! \(error)")
-            } else if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+        provider.request(.forecastHourlyWeatherByCity(cityName: cityName)) { (result) in
+            switch result {
+            case .failure(_):
                 DispatchQueue.main.async {
-                    self.forecastResult = self.parseJSON(data!)["list"].arrayValue.map { Forecast(json: $0)}
+                    self.showNetworkError()
+                }
+            case .success(let moyaResponse):
+                DispatchQueue.main.async {
+                    self.forecastResult = self.parseJSON(moyaResponse.data)["list"].arrayValue.map { Forecast(json: $0)}
                 }
             }
-        })
-        dataTask.resume()
+            
+        }
     }
     
     func getForecastDaysWeatherDataWithCityName(_ cityName: String) {
-        let url = forecastDaysWithCityName(cityName)
-        let session = URLSession.shared
-        let dataTask = session.dataTask(with: url, completionHandler: {
-            data, response, error in
-            if let error = error {
-                print("Failure! \(error)")
-            } else if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+        provider.request(.forecastDailyWeatherByCity(cityName: cityName)) { (result) in
+            switch result {
+            case .failure(_):
                 DispatchQueue.main.async {
-                    self.forecastDaysResult = Array (self.parseJSON(data!)["list"].arrayValue.map { ForecastDays(json: $0) }.dropFirst())
+                    self.showNetworkError()
+                }
+                
+            case .success(let moyaResponse):
+                DispatchQueue.main.async {
+                    self.forecastDaysResult = Array (self.parseJSON(moyaResponse.data)["list"].arrayValue.map { ForecastDays(json: $0) }.dropFirst())
                 }
             }
-        })
-        dataTask.resume()
+            
+        }
     }
-
 }
 
-   
 extension LocalWeatherViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return forecastResult.count

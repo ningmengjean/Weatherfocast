@@ -164,11 +164,16 @@ SWIFT_CLASS("_TtC10Kingfisher17AnimatedImageView")
 - (void)displayLayer:(CALayer * _Nonnull)layer;
 - (void)didMoveToWindow;
 - (void)didMoveToSuperview;
-- (BOOL)shouldPreloadAllGIF SWIFT_WARN_UNUSED_RESULT;
+- (BOOL)shouldPreloadAllAnimation SWIFT_WARN_UNUSED_RESULT;
 - (nonnull instancetype)initWithImage:(UIImage * _Nullable)image OBJC_DESIGNATED_INITIALIZER;
 - (nonnull instancetype)initWithImage:(UIImage * _Nullable)image highlightedImage:(UIImage * _Nullable)highlightedImage OBJC_DESIGNATED_INITIALIZER SWIFT_AVAILABILITY(ios,introduced=3.0);
 - (nonnull instancetype)initWithFrame:(CGRect)frame OBJC_DESIGNATED_INITIALIZER;
 - (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
+@end
+
+
+@interface AnimatedImageView (SWIFT_EXTENSION(Kingfisher))
+- (BOOL)shouldPreloadAllGIF SWIFT_WARN_UNUSED_RESULT SWIFT_DEPRECATED_MSG("", "shouldPreloadAllAnimation");
 @end
 
 @class NSURLSession;
@@ -311,11 +316,6 @@ SWIFT_CLASS("_TtC10Kingfisher29ImageDownloaderSessionHandler")
 
 
 @interface UIImageView (SWIFT_EXTENSION(Kingfisher))
-- (BOOL)shouldPreloadAllGIF SWIFT_WARN_UNUSED_RESULT;
-@end
-
-
-@interface UIImageView (SWIFT_EXTENSION(Kingfisher))
 @end
 
 
@@ -325,6 +325,8 @@ SWIFT_CLASS("_TtC10Kingfisher29ImageDownloaderSessionHandler")
 - (void)kf_cancelDownloadTask SWIFT_DEPRECATED_MSG("Extensions directly on image views are deprecated. Use `imageView.kf.cancelDownloadTask` instead.", "kf.cancelDownloadTask");
 /// Get the image URL binded to this image view.
 @property (nonatomic, readonly, copy) NSURL * _Nullable kf_webURL;
+- (BOOL)shouldPreloadAllAnimation SWIFT_WARN_UNUSED_RESULT;
+- (BOOL)shouldPreloadAllGIF SWIFT_WARN_UNUSED_RESULT SWIFT_DEPRECATED_MSG("", "shouldPreloadAllAnimation");
 @end
 
 #pragma clang diagnostic pop
