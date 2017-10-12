@@ -112,6 +112,7 @@ class LocalWeatherViewController: UIViewController, LocationServiceDelegate {
     
     func startLocation() {
         locationService.requestLocation()
+        spinner.startAnimating()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

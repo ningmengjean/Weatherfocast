@@ -14,7 +14,7 @@ import SwiftyJSON
 
 import LatLongToTimezone
 
-class ForecastDays: AnyObject {
+class ForecastDays {
     var dt: String?
     var tempmax: Int?
     var tempmin: Int?

@@ -10,7 +10,7 @@ import Foundation
 
 import SwiftyJSON
 
-class SearchResult: AnyObject {
+class SearchResult {
     
     init(json: JSON) {
         cityName = json["name"].string

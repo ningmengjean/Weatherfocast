@@ -10,7 +10,7 @@ import Foundation
 
 import SwiftyJSON
 
-class Forecast: AnyObject {
+class Forecast {
     
     init(json: JSON) {
         icon = json["weather", 0 , "icon"].string

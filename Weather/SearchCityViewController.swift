@@ -32,8 +32,19 @@ class SearchCityViewController: UIViewController {
 extension SearchCityViewController: UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        guard let text = searchBar.text else { return }
-        delegate?.shouldSearchText(text)
+        if searchBar.text == "" {
+            let alert = UIAlertController(
+                title: "Whoops...",
+                message:
+                "There was no cityname here. Please give it to me,thanks.",
+                preferredStyle: .alert)
+            let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+            alert.addAction(action)
+            present(alert, animated: true, completion: nil)
+        } else {
+            let text = searchBar.text
+            delegate?.shouldSearchText(text!)
+        }
     }
 }
 
@@ -45,10 +56,8 @@ extension SearchCityViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView,
                    cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
         return UITableViewCell()
     }
-    
 }
 
 extension SearchCityViewController: UITableViewDelegate {
